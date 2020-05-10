@@ -16,7 +16,6 @@ class CreateCropsTable extends Migration
         Schema::create('crops', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('type');
             $table->double('humidity');
             $table->timestamps();
         });

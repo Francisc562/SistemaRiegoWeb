@@ -3,17 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Crop;
+use App\Http\Controllers\Controller;
+Use App\Crop;
+Use App\Irrigation;
 
 class CropController extends Controller
-{   
-   
-    $crops = Crop::latest()->paginate(5);
-    return view('admin.crop.index',compact('crops'))
-        ->with('i', (request()->input('page', 1) - 1) * 5);
-	
-
-}
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $crops = Crop::latest()->paginate(5);
+        return view('admin.crop.index', compact('crop'))
+        ->with('i', (request()->input('page',1)-1)*5);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -25,7 +31,6 @@ class CropController extends Controller
         return view('admin.crop.create');
     }
 
-
     /**
      * Store a newly created resource in storage.
      *
@@ -36,7 +41,6 @@ class CropController extends Controller
     {
         request()->validate([
             'name'=> 'required',
-            'type'=>'required',
             'humidity'=>'required',
               
         ]);
@@ -45,9 +49,9 @@ class CropController extends Controller
 
         return redirect()->route('crop.index')
                         ->with('success','Cultivo Registrado con exito');
+    
+        }
     }
-
-
     /**
      * Display the specified resource.
      *
@@ -59,7 +63,6 @@ class CropController extends Controller
         $crop = Crop::find($id);
         return view('admin.crop.show',compact('crop'));
     }
-
 
     /**
      * Show the form for editing the specified resource.
@@ -73,7 +76,6 @@ class CropController extends Controller
         return view('admin.crop.edit',compact('crop'));
     }
 
-
     /**
      * Update the specified resource in storage.
      *
@@ -85,16 +87,14 @@ class CropController extends Controller
     {
         request()->validate([
             'name'=> 'required',
-            'type'=>'required',
             'humidity'=>'required'
         ]);
 
         Crop::find($id)->update($request->all());
 
         return redirect()->route('crop.index')
-                        ->with('warning','Cultivo Actualizado con exito');
+                        ->with('warning','Cultivo Actualizado');
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -109,3 +109,4 @@ class CropController extends Controller
         return redirect()->route('Crop.index')
                         ->with('error','Cultivo eliminado');
     }
+}
